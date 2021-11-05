@@ -42,9 +42,9 @@ public class MainFrame extends JFrame {
     private ButtonGroup radio_variable = new ButtonGroup();
     private Box box_of_variable = Box.createHorizontalBox();
 
-    double mem1 = 0.0;
-    double mem2 = 0.0;
-    double mem3 = 0.0;
+    Double mem1 = 0.0;
+    Double mem2 = 0.0;
+    Double mem3 = 0.0;
 
     private void addRadioVariable(String name, int numberOFvar){
         JRadioButton button = new JRadioButton(name);
@@ -76,13 +76,183 @@ public class MainFrame extends JFrame {
         addRadioVariable("Z",3);
 
         radio_variable.setSelected(radio_variable.getElements().nextElement().getModel(),true);
-        box_of_variable.setBorder(BorderFactory.createLineBorder(Color.red));
+        box_of_variable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel ResultM = new JLabel("Результат M:",JLabel.RIGHT);
+        resultFieldM = new JTextField("0.0",30);
+        resultFieldM.setMaximumSize(resultFieldM.getPreferredSize());
 
-        textFieldX = new JTextField("0.0", 10 );
-        textFieldX.setMaximumSize(new Dimension(2 * textFieldX.getPreferredSize().width, textFieldX.getPreferredSize().height));
+        Box boxResultM = Box.createHorizontalBox();
+        boxResultM.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        boxResultM.add(Box.createHorizontalGlue());
+        boxResultM.add(ResultM);
+        boxResultM.add(Box.createHorizontalStrut(10));
+        boxResultM.add(resultFieldM);
+        boxResultM.add(Box.createHorizontalGlue());
 
+        //
+        JLabel forX = new JLabel("X: ");
+        textFieldX = new JTextField("0",10);
+        textFieldX.setMaximumSize(textFieldX.getPreferredSize());
+        JLabel forY = new JLabel("Y: ");
+        textFieldY = new JTextField("0",10);
+        textFieldY.setMaximumSize(textFieldY.getPreferredSize());
+        JLabel forZ = new JLabel("Z: ");
+        textFieldZ = new JTextField("0",10);
+        textFieldZ.setMaximumSize(textFieldZ.getPreferredSize());
+
+        Box Variables = Box.createHorizontalBox();
+        Variables.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        Variables.add(Box.createHorizontalGlue());
+        Variables.add(forX);
+        Variables.add(Box.createHorizontalStrut(10));
+        Variables.add(textFieldX);
+
+        Variables.add(Box.createHorizontalStrut(100));
+        Variables.add(forY);
+        Variables.add(Box.createHorizontalStrut(10));
+        Variables.add(textFieldY);
+        Variables.add(Box.createHorizontalGlue());
+
+        Variables.add(Box.createHorizontalStrut(10));
+        Variables.add(forZ);
+        Variables.add(Box.createHorizontalStrut(10));
+        Variables.add(textFieldZ);
+        Variables.add((Box.createHorizontalGlue()));
+
+        JLabel forResult = new JLabel("Результат: ");
+        textFieldResult = new JTextField("0",30);
+        textFieldResult.setMaximumSize(textFieldResult.getPreferredSize());
+
+        Box boxResult = Box.createHorizontalBox();
+        boxResult.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        boxResult.add(Box.createHorizontalGlue());
+        boxResult.add(forResult);
+        boxResult.add(Box.createHorizontalStrut(10));
+        boxResult.add(textFieldResult);
+        boxResult.add(Box.createHorizontalGlue());
+        //
+
+        JButton resultButton = new JButton("result");
+        resultButton.addActionListener(new ActionListener() {
+            // Определить и зарегистрировать обработчик нажатия на кнопку
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Double x = Double.parseDouble(textFieldX.getText());
+                    Double y = Double.parseDouble(textFieldY.getText());
+                    Double z = Double.parseDouble(textFieldZ.getText());
+                    Double result;
+                    if (formulaId == 1){
+                        result = function1(x, y, z);
+                    }
+                    else{
+                        result = function2(x, y, z);
+                    }
+
+                    textFieldResult.setText(result.toString());
+                }catch (NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Ошибочный формат числа",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        // MC M+
+        JButton M = new JButton("M+");
+        M.addActionListener(new ActionListener() {
+            // Определить и зарегистрировать обработчик нажатия на кнопку
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Double x = Double.parseDouble(textFieldX.getText());
+                    Double y = Double.parseDouble(textFieldY.getText());
+                    Double z = Double.parseDouble(textFieldZ.getText());
+
+                    if (numberOFvar==1) {
+                        mem1 += x;
+                        resultFieldM.setText(mem1.toString());
+
+                    }
+                    if (numberOFvar==2) {
+                        mem2+=y;
+                        resultFieldM.setText(mem2.toString());
+                    }
+                    if (numberOFvar==3) {
+                        mem3 += z;
+                        resultFieldM.setText(mem3.toString());
+                    }
+                    /*
+
+*/
+                }catch (NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Ошибочный формат числа",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        //очистить запоминание
+        JButton MC_clear = new JButton("MC");
+        MC_clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(numberOFvar ==1)
+                {
+                    textFieldX.setText("0");
+                }
+                if(numberOFvar ==2) {
+                    textFieldY.setText("0");
+                }
+                if(numberOFvar ==3) {
+                    textFieldZ.setText("0");
+                }
+            }
+        });
+        //Очистить все
+        JButton clear = new JButton("Clear");
+        clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textFieldX.setText("0");
+                textFieldY.setText("0");
+                textFieldY.setText("0");
+                textFieldResult.setText("0");
+                ResultM.setText("0");
+            }
+        });
+
+        Box boxbuttons = Box.createHorizontalBox();
+        boxbuttons.add(Box.createHorizontalGlue());
+        boxbuttons.add(resultButton);
+        boxbuttons.add(Box.createHorizontalStrut(30));
+        boxbuttons.add(clear);
+        //2-3
+        boxbuttons.add(M);
+        boxbuttons.add(MC_clear);
+        //
+        boxbuttons.add(Box.createHorizontalGlue());
+        boxbuttons.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+
+        Box contentBox = Box.createVerticalBox();
+        contentBox.add(Box.createVerticalGlue());
+        contentBox.add(hboxFormulaType);
+        //2-3
+        contentBox.add(Box.createHorizontalGlue());
+        contentBox.add(box_of_variable);
+        //contentBox.add(boxMemory);
+        contentBox.add(boxResultM);
+        contentBox.add(M);
+
+        //
+        contentBox.add(Variables);
+        contentBox.add(resultButton);
+        contentBox.add(boxbuttons);
+        contentBox.add(boxResult);
+        contentBox.add(Box.createVerticalGlue());
+
+        getContentPane().add(contentBox, BorderLayout.CENTER);
 
     }
 }
