@@ -107,18 +107,21 @@ public class MainFrame extends JFrame {
         Variables.add(forX);
         Variables.add(Box.createHorizontalStrut(10));
         Variables.add(textFieldX);
+        //Variables.add((Box.createHorizontalGlue()));
 
+        Variables.add((Box.createHorizontalGlue()));
         Variables.add(Box.createHorizontalStrut(100));
         Variables.add(forY);
         Variables.add(Box.createHorizontalStrut(10));
         Variables.add(textFieldY);
-        Variables.add(Box.createHorizontalGlue());
+        //Variables.add(Box.createHorizontalGlue());
 
+        Variables.add((Box.createHorizontalGlue()));
         Variables.add(Box.createHorizontalStrut(10));
         Variables.add(forZ);
         Variables.add(Box.createHorizontalStrut(10));
         Variables.add(textFieldZ);
-        Variables.add((Box.createHorizontalGlue()));
+       // Variables.add((Box.createHorizontalGlue()));
 
         JLabel forResult = new JLabel("Результат: ");
         textFieldResult = new JTextField("0",30);
@@ -243,7 +246,8 @@ public class MainFrame extends JFrame {
         contentBox.add(boxbuttons);
         contentBox.add(boxResult);
         contentBox.add(Box.createVerticalGlue());
-
+        //Down BoxFunction
+       // contentBox.add(hboxFormulaType);
         getContentPane().add(contentBox, BorderLayout.CENTER);
 
     }
