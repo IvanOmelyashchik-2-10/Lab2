@@ -37,22 +37,22 @@ public class MainFrame extends JFrame {
         hboxFormulaType.add(button);
     }
     //MC M+
-    private int numberOFvar = 1;
+    private  int numberVariable = 1;
     private JTextField resultFieldM;
     private ButtonGroup radio_variable = new ButtonGroup();
     private Box box_of_variable = Box.createHorizontalBox();
 
-    Double mem1 = 0.0;
-    Double mem2 = 0.0;
-    Double mem3 = 0.0;
-
-    private void addRadioVariable(String name, int numberOFvar){
+    private Double mem1 = (double) 0.0;
+    private Double mem2 = (double)0.0;
+    private Double mem3 = (double)0.0;
+//
+    private void addRadioVariable(String name, int numberVariable){
         JRadioButton button = new JRadioButton(name);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame.this.resultFieldM = resultFieldM;
-            }
+        button.addActionListener(event -> {
+            MainFrame.this.numberVariable = numberVariable;
+            if (numberVariable == 1)	resultFieldM.setText(mem1.toString());
+            if (numberVariable == 2)	resultFieldM.setText(mem2.toString());
+            if (numberVariable == 3)	resultFieldM.setText(mem3.toString());
         });
         radio_variable.add(button);
         box_of_variable.add(button);
@@ -71,9 +71,9 @@ public class MainFrame extends JFrame {
         hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         //MC M+
         setLocation(200,100);
-        addRadioVariable("x",1);
-        addRadioVariable("Y", 2);
-        addRadioVariable("Z",3);
+        addRadioVariable("Переменная 1",1);
+        addRadioVariable("Переменная 2", 2);
+        addRadioVariable("Переменная 3",3);
 
         radio_variable.setSelected(radio_variable.getElements().nextElement().getModel(),true);
         box_of_variable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -131,7 +131,6 @@ public class MainFrame extends JFrame {
         boxResult.add(Box.createHorizontalStrut(10));
         boxResult.add(textFieldResult);
         boxResult.add(Box.createHorizontalGlue());
-        //
 
         JButton resultButton = new JButton("result");
         resultButton.addActionListener(new ActionListener() {
@@ -142,11 +141,15 @@ public class MainFrame extends JFrame {
                     Double y = Double.parseDouble(textFieldY.getText());
                     Double z = Double.parseDouble(textFieldZ.getText());
                     Double result;
+
                     if (formulaId == 1){
                         result = function1(x, y, z);
+
                     }
                     else{
                         result = function2(x, y, z);
+
+
                     }
 
                     textFieldResult.setText(result.toString());
@@ -160,51 +163,41 @@ public class MainFrame extends JFrame {
         });
         // MC M+
         JButton M = new JButton("M+");
-        M.addActionListener(new ActionListener() {
+        M.addActionListener(arg -> {
             // Определить и зарегистрировать обработчик нажатия на кнопку
-            public void actionPerformed(ActionEvent e) {
+
                 try{
-                    Double x = Double.parseDouble(textFieldX.getText());
-                    Double y = Double.parseDouble(textFieldY.getText());
-                    Double z = Double.parseDouble(textFieldZ.getText());
 
-                    if (numberOFvar==1) {
-                        mem1 += x;
-                        resultFieldM.setText(mem1.toString());
+                    Double result = Double.parseDouble(textFieldResult.getText());
+                    if (numberVariable == 1) 	{mem1 += result;resultFieldM.setText(mem1.toString());}
+                    if (numberVariable == 2)	{mem2 += result;resultFieldM.setText(mem2.toString());}
+                    if (numberVariable == 3)	{mem3 += result;resultFieldM.setText(mem3.toString());}
 
-                    }
-                    if (numberOFvar==2) {
-                        mem2+=y;
-                        resultFieldM.setText(mem2.toString());
-                    }
-                    if (numberOFvar==3) {
-                        mem3 += z;
-                        resultFieldM.setText(mem3.toString());
-                    }
-                    /*
 
-*/
+
+
+
                 }catch (NumberFormatException ex)
                 {
                     JOptionPane.showMessageDialog(MainFrame.this,
                             "Floating point format error", "Ошибочный формат числа",
                             JOptionPane.WARNING_MESSAGE);
                 }
-            }
+
         });
         //очистить запоминание
         JButton MC_clear = new JButton("MC");
         MC_clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(numberOFvar ==1)
+                if(numberVariable ==1)
                 {
                     textFieldX.setText("0");
                 }
-                if(numberOFvar ==2) {
+                if(numberVariable ==2) {
                     textFieldY.setText("0");
                 }
-                if(numberOFvar ==3) {
+                if(numberVariable ==3) {
                     textFieldZ.setText("0");
                 }
             }
@@ -241,7 +234,6 @@ public class MainFrame extends JFrame {
         //2-3
         contentBox.add(Box.createHorizontalGlue());
         contentBox.add(box_of_variable);
-        //contentBox.add(boxMemory);
         contentBox.add(boxResultM);
         contentBox.add(M);
 
